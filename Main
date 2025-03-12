@@ -1,0 +1,286 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        //teknologi
+        Buku buku1 = new Buku("Digital Revolution", new String[]{"Walter Isaacson", "Anna Teknologi"}, "001", 2014, "A look at the history of the digital revolution and its key players.");
+        Buku buku2 = new Buku("Machine Age", new String[]{"Erik Brynjolfsson", "Andrew McAfee"}, "002", 2014, "How digital technology is transforming the world and our place in it.");
+        Buku buku3 = new Buku("AI Superpowers", new String[]{"Kai-Fu Lee", "Mikael Teknologi"}, "003", 2018, "An insightful look into the AI revolution and its impact.");
+        Buku buku4 = new Buku("Surveillance Capitalism", new String[]{"Shoshana Zuboff"}, "004", 2019, "An analysis of how tech companies are harvesting data and its societal implications.");
+        Buku buku5 = new Buku("Clean Code", new String[]{"Robert C. Martin", "Teknisi Umum"}, "005", 2008, "A guide for software developers on writing clean, maintainable code.");
+        Kategori tech = new Kategori("Teknologi", "TC", "Buku-buku tentang teknologi terkini", new Buku[]{buku1, buku2, buku3, buku4, buku5});
+
+        //filosofi
+        Buku buku6 = new Buku("The Art of Thinking Clearly", new String[]{"Rolf Dobelli", "Sophia Filsafat"}, "006", 2013, "A guide to making better decisions by avoiding common cognitive biases.");
+        Buku buku7 = new Buku("The Examined Life", new String[]{"Robert Nozick", "Dewi Filsafat"}, "007", 1989, "An exploration of life's big questions and the importance of self-reflection.");
+        Buku buku8 = new Buku("The Tao of Pooh", new String[]{"Benjamin Hoff", "Ted Filsafat"}, "008", 1982, "A philosophical exploration through the lens of Winnie the Pooh.");
+        Buku buku9 = new Buku("Zen and the Art of Motorcycle Maintenance", new String[]{"Robert M. Pirsig", "John Filsafat"}, "009", 1974, "A philosophical journey that delves into quality, values, and the meaning of life.");
+        Buku buku10 = new Buku("Meditations", new String[]{"Marcus Aurelius", "Emma Filsafat"}, "010", 180, "Personal writings of a Roman emperor reflecting on philosophy and self-improvement.");
+        Kategori phi = new Kategori("Filsafat", "FL5", "Buku-buku tentang filsafat yang menginspirasi", new Buku[]{buku6, buku7, buku8, buku9, buku10});
+
+        //sejarah
+        Buku buku11 = new Buku("Sapiens: A Brief History", new String[]{"Yuval Noah Harari", "Sejarawan Modern"}, "011", 2011, "Explores humanity's history from the Stone Age to the present.");
+        Buku buku12 = new Buku("Guns, Germs, and Steel", new String[]{"Jared Diamond", "Pakar Sejarah"}, "012", 1997, "Examines several factors that influencing civilization development and historical processes.");
+        Buku buku13 = new Buku("The Silk Roads", new String[]{"Peter Frankopan", "Sejarawan Dunia"}, "013", 2015, "Offers a new historical perspective on the significance of the Silk Roads.");
+        Buku buku14 = new Buku("A People's History", new String[]{"Howard Zinn", "Penulis Sejarah"}, "014", 1980, "Presents an alternative view of American history from marginalized perspectives.");
+        Buku buku15 = new Buku("History of the Ancient World", new String[]{"Susan Wise Bauer", "Pengamat Sejarah"}, "015", 2007, "Chronicles ancient great civilizations from first kings to Rome's fall.");
+        Kategori his = new Kategori("Sejarah", "SJ5", "Buku-buku tentang sejarah dunia", new Buku[]{buku11, buku12, buku13, buku14, buku15});
+
+        //agama
+        Buku buku16 = new Buku("Spiritual Exploration", new String[]{"Karen Armstrong", "Ella Spiritualis"}, "016", 2010, "Examines diverse spiritual traditions and their big impact on history.");
+        Buku buku17 = new Buku("Pathways to Wisdom", new String[]{"Huston Smith", "Rama Dharma"}, "017", 2009, "A study of major religions practice and their spiritual practices.");
+        Buku buku18 = new Buku("Faith and Reason", new String[]{"Alister McGrath", "Sophia Rationalis"}, "018", 2008, "Explores the interplay between faith and science reason throughout history.");
+        Buku buku19 = new Buku("Sacred Narratives", new String[]{"Elaine Pagels", "Liam Historikus"}, "019", 2005, "Analyzes stories and moral teachings found in various religious texts.");
+        Buku buku20 = new Buku("Pilgrimage of the Soul", new String[]{"Thich Nhat Hanh"}, "020", 2004, "A journey through different religion or spiritual paths and their practices.");
+        Kategori rel = new Kategori("Agama", "AG5", "Buku-buku tentang religiositas", new Buku[]{buku16, buku17, buku18, buku19, buku20});
+
+        //psikologi
+        Buku buku21 = new Buku("The Psychology of Influence", new String[]{"Robert Cialdini", "Jane Psychologist"}, "021", 1984, "Explores the principles of persuasion and their impact on behavior.");
+        Buku buku22 = new Buku("Mindset: The New Psychology of Success", new String[]{"Carol S. Dweck", "Alex Mind"}, "022", 2006, "Discusses how different mindsets can affect motivation, achievement, and success.");
+        Buku buku23 = new Buku("Thinking, Fast and Slow", new String[]{"Daniel Kahneman", "Liam Thoughts"}, "023", 2011, "Examines the two systems of thought and their influence on decisions.");
+        Buku buku24 = new Buku("Emotional Intelligence", new String[]{"Daniel Goleman", "Ari Emotion"}, "024", 1995, "Highlights the importance of emotional intelligence in personal and professional life.");
+        Buku buku25 = new Buku("The Power of Habit", new String[]{"Charles Duhigg", "Mia Routine"}, "025", 2012, "Explores how habits form and how they can be changed to improve life.");
+        Kategori psy = new Kategori("Psikologi", "PS5", "Buku-buku tentang psikologi manusia", new Buku[]{buku21, buku22, buku23, buku24, buku25});
+
+        //politik
+        Buku buku26 = new Buku("Political Strategies", new String[]{"Jeannette Walls", "Romeo Juliet"}, "026", 2020, "Explores several political strategies and manipulations in various social contexts.");
+        Buku buku27 = new Buku("The Political Circus", new String[]{"Erin Morgenstern", "Deddy Corbuzier"}, "027", 2011, "A political satire and jokes about political intrigue, magic, and competition.");
+        Buku buku28 = new Buku("The Political Giver", new String[]{"Lois Lowry", "Alex Politikus"}, "028", 1993, "A dystopian novel about a controlled society with strict political rules.");
+        Buku buku29 = new Buku("Communism Ideology", new String[]{"Vladimir Lenin", "Karl Marx"}, "029", 1910, "Discusses principles, impact, and implementation of communism in historical context.");
+        Buku buku30 = new Buku("Capitalism Impact", new String[]{"George Washington", "Adam Smith"}, "030", 2010, "Examines effects of capitalism on global economy and social structures.");
+        Kategori pol = new Kategori("Politik", "PL5", "Buku-buku tentang politik dan pemerintahan", new Buku[]{buku26, buku27, buku28, buku29, buku30});
+
+        //fiksi
+        Buku buku31 = new Buku("The Time Traveler's Wife", new String[]{"Audrey Niffenegger"}, "031", 2003, "A love story about a man with a genetic disorder that causes him to time travel.");
+        Buku buku32 = new Buku("The Fault in Our Stars", new String[]{"John Green"}, "032", 2012, "A poignant love story between two teenagers that have cancer.");
+        Buku buku33 = new Buku("The Nightingale", new String[]{"Kristin Hannah"}, "033", 2015, "A historical novel about two sisters in France during World War II.");
+        Buku buku34 = new Buku("Educated", new String[]{"Tara Westover"}, "034", 2018, "A memoir about a woman's quest for knowledge and self-discovery.");
+        Buku buku35 = new Buku("Where the Crawdads Sing", new String[]{"Delia Owens"}, "035", 2018, "A coming-of-age story set in the marshes of North Carolina.");
+        Kategori fic = new Kategori("Fiksi", "FI5", "Buku-buku cerita fiksi, komik, dan cerita", new Buku[]{buku31, buku32, buku33, buku34, buku35});
+
+        //nyimpen kategori di array object untuk akses cepat
+        Kategori[] allCategories = {tech, phi, his, rel, psy, pol, fic};
+
+        Buku[] copiedBooks = new Buku[100]; //Max 100 buku salinan
+        int copiedBooksCount = 0;
+
+        //page menunya
+        int x;
+        do {
+            System.out.println("""
+                    =================================
+                    CAMPUS LIBRARY INFORMATION SYSTEM
+                    =================================
+                    Menu
+                    1. Category: Technology
+                    2. Category: Philosophy
+                    3. Category: History
+                    4. Category: Religion
+                    5. Category: Psychology
+                    6. Category: Politics
+                    7. Category: Fictional
+                    8. Similarities Check
+                    9. Copy Books
+                    10. Show Copied Books
+                    11. Claim Royalty
+                    0. Logout
+                    =================================
+                    """);
+
+            System.out.print("Please choose = ");
+            x = scan.nextInt();
+            scan.nextLine();
+
+            switch(x) {
+                case 1 -> {
+                    System.out.println("[1]");
+                    tech.showCategory();
+                }
+                case 2 -> {
+                    System.out.println("[2]");
+                    phi.showCategory();
+                }
+                case 3 -> {
+                    System.out.println("[3]");
+                    his.showCategory();
+                }
+                case 4 -> {
+                    System.out.println("[4]");
+                    rel.showCategory();
+                }
+                case 5 -> {
+                    System.out.println("[5]");
+                    psy.showCategory();
+                }
+                case 6 -> {
+                    System.out.println("[6]");
+                    pol.showCategory();
+                }
+                case 7 -> {
+                    System.out.println("[7]");
+                    fic.showCategory();
+                }
+                case 8 -> {
+                    System.out.println("[8] Similarities Check");
+                    System.out.println("Pilih kategori yang ingin dicek kesamaannya:");
+
+                    for (int i = 0; i < allCategories.length; i++) {
+                        System.out.println((i+1) + ". " + allCategories[i].jenisKategori);
+                    }
+
+                    System.out.print("Enter your choice: ");
+                    int categoryChoice = scan.nextInt();
+                    scan.nextLine();
+
+                    if (categoryChoice >= 1 && categoryChoice <= allCategories.length) {
+                        Kategori selectedCategory = allCategories[categoryChoice-1];
+                        Buku[] categoryBooks = selectedCategory.buku;
+
+                        System.out.println("===========================================");
+                        System.out.println("SIMILARITIES CHECK FOR " + selectedCategory.jenisKategori.toUpperCase() + " BOOKS");
+                        System.out.println("===========================================");
+
+                        boolean foundSimilarity = false;
+
+                        for (int i = 0; i < categoryBooks.length - 1; i++) {
+                            for (int j = i + 1; j < categoryBooks.length; j++) {
+                                double similarity = categoryBooks[i].cekTingkatKesamaan(categoryBooks[j]);
+
+                                System.out.printf("Buku \"%s\" (ID: %s) dan \"%s\" (ID: %s) memiliki kesamaan %.2f%%\n",
+                                        categoryBooks[i].judul, categoryBooks[i].id,
+                                        categoryBooks[j].judul, categoryBooks[j].id,
+                                        similarity);
+
+                                foundSimilarity = true;
+                            }
+                        }
+
+                        if (!foundSimilarity) {
+                            System.out.println("Tidak ada buku untuk dibandingkan di kategori ini");
+                        }
+                    }
+                    else {
+                        System.out.println("Pilihan kategori tidak tepat");
+                    }
+                }
+                case 9 -> {
+                    System.out.println("[9] Copy Book");
+
+                    System.out.println("Choose a category to copy a book from:");
+                    for (int i = 0; i < allCategories.length; i++) {
+                        System.out.println((i+1) + ". " + allCategories[i].jenisKategori);
+                    }
+
+                    System.out.print("Enter your choice: ");
+                    int categoryChoice = scan.nextInt();
+                    scan.nextLine();
+
+                    if (categoryChoice >= 1 && categoryChoice <= allCategories.length) {
+                        Kategori selectedCategory = allCategories[categoryChoice-1];
+
+                        System.out.println("Books in " + selectedCategory.jenisKategori + ":");
+                        for (Buku b : selectedCategory.buku) {
+                            System.out.println("ID: " + b.id + " - " + b.judul);
+                        }
+
+                        System.out.print("Enter the ID of the book to copy: ");
+                        String bookId = scan.nextLine();
+
+                        for (Buku b : selectedCategory.buku) {
+                            if (b.id.equals(bookId)) {
+                                Buku copiedBook = b.copy();
+                                if (copiedBooksCount < copiedBooks.length) {
+                                    copiedBooks[copiedBooksCount++] = copiedBook;
+                                    System.out.println("Buku \"" + b.judul + "\" berhasil disalin.");
+                                    System.out.println("---- Detail Salinan Buku ----");
+                                    System.out.println("Title: " + copiedBook.judul);
+                                    System.out.println("ID: " + copiedBook.id);
+                                    System.out.println("Authors: " + Arrays.toString(copiedBook.penulis));
+                                    System.out.println("Year: " + copiedBook.terbit);
+                                    System.out.println("Synopsis: " + copiedBook.sinopsis);
+                                } else {
+                                    System.out.println("Tidak bisa menyalin lagi, sudah mencapai limit!.");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        System.out.println("Pilihan tidak valid.");
+                    }
+                }
+                case 10 -> {
+                    System.out.println("[10] Show Copied Books");
+
+                    if (copiedBooksCount == 0) {
+                        System.out.println("Belum ada buku yang disalin.");
+                    } else {
+                        System.out.println("=================================");
+                        System.out.println("LIST OF COPIED BOOKS");
+                        System.out.println("=================================");
+
+                        for (int i = 0; i < copiedBooksCount; i++) {
+                            Buku b = copiedBooks[i];
+                            System.out.println("Copy #" + (i+1));
+                            System.out.println("--------");
+                            System.out.println((b.judul + " | ID: " + b.id + " | Tahun: " + b.terbit)+" |");
+                            System.out.println("Ditulis oleh : "+ Arrays.toString(b.penulis));
+                            int countSy = b.sinopsis.split("\\s").length;
+                            System.out.println("Sinopsis : "+b.sinopsis+" | "+countSy+" words");
+                            System.out.println();
+                        }
+                    }
+                }
+                case 11 -> {
+                    System.out.println("[11] Klaim royalti");
+                    int womp;
+
+                    System.out.println("""
+                                Silahkan pilih
+                                1. Royalti dengan penentuan sharing dari perusahaan
+                                2. Royalti dengan penentuan sharing secara mandiri
+                                """);
+                    System.out.print("Pilihan Anda = ");
+                    womp = scan.nextInt();
+
+                    switch(womp){
+                        case 1 -> {
+                            System.out.print("Masukkan harga buku yang Anda ingin klaim = ");
+                            double hargabuku1 = scan.nextDouble();
+
+                            Buku royalti1 = new Buku();
+                            double hasil1 = royalti1.hitungRoyalti(hargabuku1);
+                            System.out.printf("Setiap buku Anda akan mendapat royalti = Rp%.2f%n",hasil1);
+                        }
+                        case 2 -> {
+                            System.out.print("Masukkan harga buku yang Anda ingin klaim = ");
+                            double hargabuku2 = scan.nextDouble();
+
+                            System.out.print("Masukkan persenan yang Anda inginkan (dalam persen) = ");
+                            double percent = scan.nextInt();
+
+                            Buku royalti2 = new Buku();
+                            double hasil2 = royalti2.hitungRoyalti(hargabuku2, percent);
+                            System.out.printf("Setiap buku Anda akan mendapat royalti = Rp%.2f%n",hasil2);
+                        }
+                        default -> {
+                            System.out.println("Pilihan salah!!!!");
+                        }
+                    }
+
+                }
+                case 0 -> {
+                    System.out.println("Thank you for using our service!");
+                }
+                default -> {
+                    System.out.println("Invalid option. Please try again.");
+                }
+            }
+        } while (x != 0);
+
+        scan.close();
+    }
+}
