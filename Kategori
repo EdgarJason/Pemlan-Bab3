@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+public class Kategori {
+    public String jenisKategori;
+    public String kode;
+    public String desc;
+    public Buku[] buku;
+
+    //constructor
+    public Kategori(String jenisKategori, String kode, String desc, Buku[] buku) {
+        this.jenisKategori = jenisKategori;
+        this.kode = kode;
+        this.desc = desc;
+        this.buku = buku;
+    }
+
+    //menampilkan semua tergantung pada category yang dipilih
+    //sekaligus ada synopsis counter
+    public void showCategory(){
+        System.out.println("=================================");
+        System.out.println("Jenis Kategori: " + jenisKategori);
+        System.out.println("Kode : " + kode);
+        System.out.println("Deskripsi : " + desc);
+        System.out.println("Daftar Buku:");
+
+        // Menampilkan daftar buku
+        if (buku != null && buku.length > 0) {
+            for (Buku b : buku) {
+                System.out.println("--------");
+                System.out.println((b.judul + " | ID: " + b.id + " | Tahun: " + b.terbit)+" |");
+                System.out.println("Ditulis oleh : "+ Arrays.toString(b.penulis));
+                int countSy = b.sinopsis.split("\\s").length;
+                System.out.println("Sinopsis : "+b.sinopsis+" | "+countSy+" words");
+            }
+        }
+        else {
+            System.out.println("Tidak ada buku dalam kategori ini.");
+        }
+    }
+
+}
