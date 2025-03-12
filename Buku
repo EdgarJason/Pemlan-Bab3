@@ -1,0 +1,108 @@
+public class Buku {
+    public String judul;
+    public String[] penulis;
+    public String id;
+    public String sinopsis;
+    public int terbit;
+
+    //constructor
+    public Buku(String judul, String[] penulis, String id, int terbit, String sinopsis) {
+        this.judul = judul;
+        this.penulis = penulis;
+        this.id = id;
+        this.terbit = terbit;
+        this.sinopsis = sinopsis;
+    }
+
+    public Buku(){
+
+    }
+
+    //hitung royalti parameter harga 1 buku itu
+    public double hitungRoyalti(double price) {
+        return price * 0.1;
+    }
+
+    //hitung royalti parameter harga 1 buku dan persennya
+    public double hitungRoyalti(double price, double percent){
+        return price * (percent/100);
+    }
+
+    //ngecek tingkat kesamaan
+    public double cekTingkatKesamaan(Buku other) {
+        if (other == null) return 0;
+
+        double similarity = 0;
+        double totalAttributes = 5;
+
+        if (this.judul != null && this.judul.equals(other.judul)) {
+            similarity += 1;
+        }
+
+        if (this.penulis != null && other.penulis != null) {
+            int matchingAuthors = 0;
+            for (String author1 : this.penulis) {
+                for (String author2 : other.penulis) {
+                    if (author1.equals(author2)) {
+                        matchingAuthors++;
+                        break;
+                    }
+                }
+            }
+
+            int totalUniqueAuthors = this.penulis.length;
+            boolean found;
+            for (String author2 : other.penulis) {
+                found = false;
+                for (String author1 : this.penulis) {
+                    if (author1.equals(author2)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    totalUniqueAuthors++;
+                }
+            }
+
+            if (totalUniqueAuthors > 0) {
+                similarity += (double) matchingAuthors / totalUniqueAuthors;
+            }
+        }
+
+        if (this.id != null && this.id.equals(other.id)) {
+            similarity += 1;
+        }
+
+        if (this.sinopsis != null && this.sinopsis.equals(other.sinopsis)) {
+            similarity += 1;
+        }
+
+        if (this.terbit > 0 && other.terbit > 0) {
+            int yearDiff = Math.abs(this.terbit - other.terbit);
+            double yearScore = Math.max(0, 1 - (yearDiff / 100.0)); // Max 100 tahun perbedaan
+            similarity += yearScore;
+        }
+
+        return (similarity / totalAttributes) * 100;
+    }
+
+    //ngebuat copian buku
+    public Buku copy() {
+        String[] newPenulis = null;
+        if (this.penulis != null) {
+            newPenulis = new String[this.penulis.length];
+            for (int i = 0; i < this.penulis.length; i++) {
+                newPenulis[i] = this.penulis[i];
+            }
+        }
+
+        return new Buku(
+                this.judul,
+                newPenulis,
+                this.id,
+                this.terbit,
+                this.sinopsis
+        );
+    }
+}
