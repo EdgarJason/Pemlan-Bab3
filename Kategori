@@ -1,4 +1,10 @@
 import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Kategori {
     public String jenisKategori;
@@ -6,12 +12,88 @@ public class Kategori {
     public String desc;
     public Buku[] buku;
 
-    //constructor
     public Kategori(String jenisKategori, String kode, String desc, Buku[] buku) {
         this.jenisKategori = jenisKategori;
         this.kode = kode;
         this.desc = desc;
         this.buku = buku;
+    }
+
+    public Kategori() {
+        this.jenisKategori = "";
+        this.kode = "";
+        this.desc = "";
+        this.buku = new Buku[0];
+    }
+
+    public void bacaFile(String pathFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathFile))) {
+            String line;
+
+            if ((line = reader.readLine()) != null) {
+                String[] categoryInfo = line.split(";");
+                if (categoryInfo.length >= 3) {
+                    this.jenisKategori = categoryInfo[0].trim();
+                    this.kode = categoryInfo[1].trim();
+                    this.desc = categoryInfo[2].trim();
+                }
+            }
+
+            ArrayList<Buku> bookList = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+                String[] bookInfo = line.split(";");
+                if (bookInfo.length >= 5) {
+                    String judul = bookInfo[0].trim();
+
+                    // Parse authors
+                    String[] penulis = bookInfo[1].trim().split(",");
+                    for (int i = 0; i < penulis.length; i++) {
+                        penulis[i] = penulis[i].trim();
+                    }
+
+                    String id = bookInfo[2].trim();
+                    int terbit = Integer.parseInt(bookInfo[3].trim());
+                    String sinopsis = bookInfo[4].trim();
+
+                    Buku buku = new Buku(judul, penulis, id, terbit, sinopsis);
+                    bookList.add(buku);
+                }
+            }
+
+            this.buku = bookList.toArray(new Buku[0]);
+            System.out.println("File berhasil dibaca: " + pathFile);
+
+        } catch (IOException e) {
+            System.out.println("Error membaca file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing data: " + e.getMessage());
+        }
+    }
+
+    public void simpanFile(String namaFile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(namaFile))) {
+            writer.write(jenisKategori + ";" + kode + ";" + desc);
+            writer.newLine();
+
+            if (buku != null && buku.length > 0) {
+                for (Buku b : buku) {
+                    // Convert authors array to comma-separated string
+                    String penulisString = "";
+                    if (b.penulis != null && b.penulis.length > 0) {
+                        penulisString = String.join(", ", b.penulis);
+                    }
+
+                    writer.write(b.judul + ";" + penulisString + ";" +
+                            b.id + ";" + b.terbit + ";" + b.sinopsis);
+                    writer.newLine();
+                }
+            }
+
+            System.out.println("File berhasil disimpan: " + namaFile);
+
+        } catch (IOException e) {
+            System.out.println("Error menyimpan file: " + e.getMessage());
+        }
     }
 
     //menampilkan semua tergantung pada category yang dipilih
@@ -37,5 +119,4 @@ public class Kategori {
             System.out.println("Tidak ada buku dalam kategori ini.");
         }
     }
-
 }
