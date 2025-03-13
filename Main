@@ -86,6 +86,10 @@ public class Main {
                     9. Copy Books
                     10. Show Copied Books
                     11. Claim Royalty
+                    12. Save Category to File
+                    13. Load Category from File
+                    14. Save Book to File
+                    15. Load Book from File
                     0. Logout
                     =================================
                     """);
@@ -194,91 +198,222 @@ public class Main {
                                 Buku copiedBook = b.copy();
                                 if (copiedBooksCount < copiedBooks.length) {
                                     copiedBooks[copiedBooksCount++] = copiedBook;
-                                    System.out.println("Buku \"" + b.judul + "\" berhasil disalin.");
-                                    System.out.println("---- Detail Salinan Buku ----");
-                                    System.out.println("Title: " + copiedBook.judul);
-                                    System.out.println("ID: " + copiedBook.id);
-                                    System.out.println("Authors: " + Arrays.toString(copiedBook.penulis));
-                                    System.out.println("Year: " + copiedBook.terbit);
-                                    System.out.println("Synopsis: " + copiedBook.sinopsis);
+                                    System.out.println("Buku \"" + copiedBook.judul + "\" berhasil disalin.");
                                 } else {
-                                    System.out.println("Tidak bisa menyalin lagi, sudah mencapai limit!.");
+                                    System.out.println("Penyimpanan buku salinan penuh.");
                                 }
                                 break;
                             }
                         }
+                        System.out.println("Buku dengan ID " + bookId + " tidak ditemukan.");
                     }
                     else {
-                        System.out.println("Pilihan tidak valid.");
+                        System.out.println("Pilihan kategori tidak tepat");
                     }
                 }
                 case 10 -> {
                     System.out.println("[10] Show Copied Books");
-
-                    if (copiedBooksCount == 0) {
-                        System.out.println("Belum ada buku yang disalin.");
-                    } else {
-                        System.out.println("=================================");
-                        System.out.println("LIST OF COPIED BOOKS");
-                        System.out.println("=================================");
-
+                    if (copiedBooksCount > 0) {
+                        System.out.println("Daftar Buku Salinan:");
                         for (int i = 0; i < copiedBooksCount; i++) {
-                            Buku b = copiedBooks[i];
-                            System.out.println("Copy #" + (i+1));
-                            System.out.println("--------");
-                            System.out.println((b.judul + " | ID: " + b.id + " | Tahun: " + b.terbit)+" |");
-                            System.out.println("Ditulis oleh : "+ Arrays.toString(b.penulis));
-                            int countSy = b.sinopsis.split("\\s").length;
-                            System.out.println("Sinopsis : "+b.sinopsis+" | "+countSy+" words");
-                            System.out.println();
+                            System.out.println((i+1) + ". " + copiedBooks[i].judul + " (ID: " + copiedBooks[i].id + ")");
                         }
+                    } else {
+                        System.out.println("Belum ada buku yang disalin.");
                     }
                 }
                 case 11 -> {
-                    System.out.println("[11] Klaim royalti");
-                    int womp;
-
-                    System.out.println("""
-                                Silahkan pilih
-                                1. Royalti dengan penentuan sharing dari perusahaan
-                                2. Royalti dengan penentuan sharing secara mandiri
-                                """);
-                    System.out.print("Pilihan Anda = ");
-                    womp = scan.nextInt();
-
-                    switch(womp){
-                        case 1 -> {
-                            System.out.print("Masukkan harga buku yang Anda ingin klaim = ");
-                            double hargabuku1 = scan.nextDouble();
-
-                            Buku royalti1 = new Buku();
-                            double hasil1 = royalti1.hitungRoyalti(hargabuku1);
-                            System.out.printf("Setiap buku Anda akan mendapat royalti = Rp%.2f%n",hasil1);
-                        }
-                        case 2 -> {
-                            System.out.print("Masukkan harga buku yang Anda ingin klaim = ");
-                            double hargabuku2 = scan.nextDouble();
-
-                            System.out.print("Masukkan persenan yang Anda inginkan (dalam persen) = ");
-                            double percent = scan.nextInt();
-
-                            Buku royalti2 = new Buku();
-                            double hasil2 = royalti2.hitungRoyalti(hargabuku2, percent);
-                            System.out.printf("Setiap buku Anda akan mendapat royalti = Rp%.2f%n",hasil2);
-                        }
-                        default -> {
-                            System.out.println("Pilihan salah!!!!");
-                        }
+                    System.out.println("[11] Claim Royalty");
+                    System.out.println("Pilih kategori untuk mengklaim royalti:");
+                    for (int i = 0; i < allCategories.length; i++) {
+                        System.out.println((i+1) + ". " + allCategories[i].jenisKategori);
                     }
 
+                    System.out.print("Masukkan pilihan: ");
+                    int categoryChoice = scan.nextInt();
+                    scan.nextLine();
+
+                    if (categoryChoice >= 1 && categoryChoice <= allCategories.length) {
+                        Kategori selectedCategory = allCategories[categoryChoice-1];
+
+                        System.out.println("Buku dalam kategori " + selectedCategory.jenisKategori + ":");
+                        for (Buku b : selectedCategory.buku) {
+                            System.out.println("ID: " + b.id + " - " + b.judul);
+                        }
+
+                        System.out.print("Masukkan ID buku untuk mengklaim royalti: ");
+                        String bookId = scan.nextLine();
+
+                        for (Buku b : selectedCategory.buku) {
+                            if (b.id.equals(bookId)) {
+                                System.out.print("Masukkan harga buku (dalam Rupiah): ");
+                                double price = scan.nextDouble();
+                                scan.nextLine();
+
+                                System.out.println("Pilih metode perhitungan royalti:");
+                                System.out.println("1. Standard (10% dari harga)");
+                                System.out.println("2. Custom (persentase kustom)");
+                                System.out.print("Pilihan: ");
+                                int royaltyChoice = scan.nextInt();
+                                scan.nextLine();
+
+                                double royalty;
+                                if (royaltyChoice == 1) {
+                                    royalty = b.hitungRoyalti(price);
+                                    System.out.printf("Royalti standar (10%%): Rp %.2f\n", royalty);
+                                } else if (royaltyChoice == 2) {
+                                    System.out.print("Masukkan persentase royalti: ");
+                                    double percentage = scan.nextDouble();
+                                    scan.nextLine();
+                                    royalty = b.hitungRoyalti(price, percentage);
+                                    System.out.printf("Royalti kustom (%.2f%%): Rp %.2f\n", percentage, royalty);
+                                } else {
+                                    System.out.println("Pilihan tidak valid.");
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        System.out.println("Pilihan kategori tidak valid.");
+                    }
                 }
-                case 0 -> {
-                    System.out.println("Thank you for using our service!");
+                case 12 -> {
+                    System.out.println("[12] Save Category to File");
+                    System.out.println("Pilih kategori untuk disimpan:");
+                    for (int i = 0; i < allCategories.length; i++) {
+                        System.out.println((i+1) + ". " + allCategories[i].jenisKategori);
+                    }
+
+                    System.out.print("Masukkan pilihan: ");
+                    int categoryChoice = scan.nextInt();
+                    scan.nextLine();
+
+                    if (categoryChoice >= 1 && categoryChoice <= allCategories.length) {
+                        Kategori selectedCategory = allCategories[categoryChoice-1];
+                        System.out.print("Masukkan nama file untuk menyimpan kategori: ");
+                        String fileName = scan.nextLine();
+                        selectedCategory.simpanFile(fileName);
+                    } else {
+                        System.out.println("Pilihan kategori tidak valid.");
+                    }
                 }
-                default -> {
-                    System.out.println("Invalid option. Please try again.");
+                case 13 -> {
+                    System.out.println("[13] Load Category from File");
+                    System.out.print("Masukkan path file untuk memuat kategori: ");
+                    String filePath = scan.nextLine();
+
+                    Kategori loadedCategory = new Kategori();
+                    loadedCategory.bacaFile(filePath);
+
+                    System.out.println("Kategori yang dimuat:");
+                    loadedCategory.showCategory();
+
+                    System.out.println("Apakah anda ingin menambahkan kategori ini ke sistem? (y/n)");
+                    String choice = scan.nextLine();
+
+                    if (choice.equalsIgnoreCase("y")) {
+                        Kategori[] newCategories = new Kategori[allCategories.length + 1];
+
+                        for (int i = 0; i < allCategories.length; i++) {
+                            newCategories[i] = allCategories[i];
+                        }
+
+                        newCategories[allCategories.length] = loadedCategory;
+
+                        allCategories = newCategories;
+
+                        System.out.println("Kategori berhasil ditambahkan.");
+                    }
                 }
+                case 14 -> {
+                    System.out.println("[14] Save Book to File");
+                    System.out.println("Pilih kategori untuk mengambil buku:");
+                    for (int i = 0; i < allCategories.length; i++) {
+                        System.out.println((i+1) + ". " + allCategories[i].jenisKategori);
+                    }
+
+                    System.out.print("Masukkan pilihan: ");
+                    int categoryChoice = scan.nextInt();
+                    scan.nextLine();
+
+                    if (categoryChoice >= 1 && categoryChoice <= allCategories.length) {
+                        Kategori selectedCategory = allCategories[categoryChoice-1];
+
+                        System.out.println("Buku dalam kategori " + selectedCategory.jenisKategori + ":");
+                        for (Buku b : selectedCategory.buku) {
+                            System.out.println("ID: " + b.id + " - " + b.judul);
+                        }
+
+                        System.out.print("Masukkan ID buku untuk disimpan: ");
+                        String bookId = scan.nextLine();
+
+                        for (Buku b : selectedCategory.buku) {
+                            if (b.id.equals(bookId)) {
+                                System.out.print("Masukkan nama file untuk menyimpan buku: ");
+                                String fileName = scan.nextLine();
+                                b.simpanFile(fileName);
+                                break;
+                            }
+                        }
+
+                    } else {
+                        System.out.println("Pilihan kategori tidak valid.");
+                    }
+                }
+                case 15 -> {
+                    System.out.println("[15] Load Book from File");
+                    System.out.print("Masukkan path file untuk memuat buku: ");
+                    String filePath = scan.nextLine();
+
+                    Buku loadedBook = new Buku();
+                    loadedBook.bacaFile(filePath);
+
+                    System.out.println("Buku yang dimuat:");
+                    System.out.println("Judul: " + loadedBook.judul);
+                    System.out.println("Penulis: " + Arrays.toString(loadedBook.penulis));
+                    System.out.println("ID: " + loadedBook.id);
+                    System.out.println("Tahun: " + loadedBook.terbit);
+                    System.out.println("Sinopsis: " + loadedBook.sinopsis);
+
+                    System.out.println("Apakah anda ingin menambahkan buku ini ke kategori? (y/n)");
+                    String choice = scan.nextLine();
+
+                    if (choice.equalsIgnoreCase("y")) {
+                        System.out.println("Pilih kategori untuk menambahkan buku:");
+                        for (int i = 0; i < allCategories.length; i++) {
+                            System.out.println((i+1) + ". " + allCategories[i].jenisKategori);
+                        }
+
+                        System.out.print("Masukkan pilihan: ");
+                        int categoryChoice = scan.nextInt();
+                        scan.nextLine();
+
+                        if (categoryChoice >= 1 && categoryChoice <= allCategories.length) {
+                            Kategori selectedCategory = allCategories[categoryChoice-1];
+
+                            Buku[] newBooks = new Buku[selectedCategory.buku.length + 1];
+
+                            for (int i = 0; i < selectedCategory.buku.length; i++) {
+                                newBooks[i] = selectedCategory.buku[i];
+                            }
+
+                            newBooks[selectedCategory.buku.length] = loadedBook;
+
+                            selectedCategory.buku = newBooks;
+
+                            System.out.println("Buku berhasil ditambahkan ke kategori " + selectedCategory.jenisKategori);
+                        } else {
+                            System.out.println("Pilihan kategori tidak valid.");
+                        }
+                    }
+                }
+                case 0 -> System.out.println("Terima kasih telah menggunakan sistem ini!");
+                default -> System.out.println("Pilihan tidak valid, silakan coba lagi.");
             }
+
+            System.out.println("\nTekan Enter untuk melanjutkan...");
+            scan.nextLine();
+
         } while (x != 0);
 
         scan.close();
