@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Buku {
     public String judul;
     public String[] penulis;
@@ -15,7 +21,59 @@ public class Buku {
     }
 
     public Buku(){
+        this.judul = "";
+        this.penulis = new String[0];
+        this.id = "";
+        this.terbit = 0;
+        this.sinopsis = "";
+    }
 
+    public void bacaFile(String pathFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathFile))) {
+            String line = reader.readLine();
+            if (line != null) {
+                String[] bookInfo = line.split(";");
+                if (bookInfo.length >= 5) {
+                    this.judul = bookInfo[0].trim();
+
+                    // Parse authors
+                    String[] authorsList = bookInfo[1].trim().split(",");
+                    this.penulis = new String[authorsList.length];
+                    for (int i = 0; i < authorsList.length; i++) {
+                        this.penulis[i] = authorsList[i].trim();
+                    }
+
+                    this.id = bookInfo[2].trim();
+                    this.terbit = Integer.parseInt(bookInfo[3].trim());
+                    this.sinopsis = bookInfo[4].trim();
+                }
+            }
+            System.out.println("Buku berhasil dibaca dari file: " + pathFile);
+
+        } catch (IOException e) {
+            System.out.println("Error membaca file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing data: " + e.getMessage());
+        }
+    }
+
+    public void simpanFile(String namaFile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(namaFile))) {
+            // Convert authors array to comma-separated string
+            String penulisString = "";
+            if (this.penulis != null && this.penulis.length > 0) {
+                penulisString = String.join(", ", this.penulis);
+            }
+
+            // Write book information
+            writer.write(this.judul + ";" + penulisString + ";" +
+                    this.id + ";" + this.terbit + ";" + this.sinopsis);
+
+            System.out.println("Buku berhasil disimpan ke file: " + namaFile);
+
+        } catch (IOException e) {
+            System.out.println("Error menyimpan file: " + e.getMessage());
+        }
     }
 
     //hitung royalti parameter harga 1 buku itu
